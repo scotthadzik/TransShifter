@@ -108,6 +108,20 @@ void deEnergize(int pin) {
   }
 }
 
+void energize(int pin) {
+  int delayTime = 10; // This will change the frequency
+  float percentage = 0.00;
+  while (percentage < 100.00) {
+    digitalWrite(pin, HIGH);
+    int onTime = delayTime * percentage;
+    delay(onTime);
+    int rem = delayTime - onTime;
+    digitalWrite(pin, LOW);
+    delay(rem);
+    percentage += .005; // This will change the amount of time it takes to fully deenergize
+  }
+}
+
 void downShiftTrans() {
   switch (CurrentGear) {
     case -2:
@@ -269,7 +283,7 @@ void loop() {
       upShiftTrans();
     }
   }
-  lcd.print(CurrentGear);
+  lcd.print(gearString);
   Serial.print("Current Gear: ");
   Serial.println(gearString);
   delay(200);
